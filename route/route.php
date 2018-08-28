@@ -24,4 +24,7 @@ return [
     "readers" => "front/index/readers",
     "links" => "front/index/links",
     "search/[:page]" => "front/index/search",
+    "/newBlog" => "front/blog/new_blog",
+    "/makeBlog" => "front/blog/make_blog",
+    "/myBlog/:userId/[:page]" => "front/blog/my_blog",
 ];

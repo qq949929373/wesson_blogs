@@ -36,7 +36,9 @@ class BlogsArticle extends AdminMainController
     //新增修改页
     public function edit($id)
     {
-        $categoryList = FCategory::all();
+        $categoryList = FCategory::whereNull("link_url")
+            ->whereOr("link_url","=","")
+            ->select();
         $languageTagList = FLanguageTag::all();
         $blogs = FBlogsArticle::get($id);
         $this->assign("tags", empty($blogs) ? "" : $blogs->getData("tags"));
@@ -51,6 +53,7 @@ class BlogsArticle extends AdminMainController
             "source" => null,
             "source_name" => null,
             "author" => "wesson",
+            "author_id" => 1,
             "tags" => null
         ] : $blogs;
         $this->assign("blogs", $blogs);

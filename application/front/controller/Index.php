@@ -32,6 +32,9 @@ class Index extends IndexBaseController
         $this->assign("slides", $slides);
         $this->assign("slidesI", 0);
         $this->assign("slidesJ", 0);
+        //语言标签
+        $languageList = FLanguageTag::query("select lt.*,(select count(1) from f_blogs_article ba where concat(',',ba.tags,',') like concat('%,',lt.id,',%')) as use_num from f_language_tag lt order by use_num desc limit 0,5");
+        $this->assign("languageList", $languageList);
         //今日推荐
         $today = FTodayRecommend::where("recommend_time", "elt", time())
             ->order("recommend_time", "desc")
@@ -132,14 +135,18 @@ class Index extends IndexBaseController
         $languageList = FLanguageTag::where("category_id", "=", $categoryId)->select();
         $this->assign("languageList", $languageList);
         //最新发布
-        $where = [
-            ["category_id", "=", $categoryId]
-        ];
+//        $where = [
+//            ["category_id", "=", $categoryId]
+//        ];
+
         if (!empty($tags)) {
-            $where[] = ["concat(',',tags,',')", "like", "%," . $tags . ",%"];
+//            $where[] = ["concat(',',tags,',')", "like", "%," . $tags . ",%"];
+            $select = FBlogsArticle::where([["concat(',',tags,',')", "like", "%," . $tags . ",%"]]);
+        } else {
+            $select = FBlogsArticle::where("category_id", "=", $categoryId);
         }
         $page = $request->get("page", 1);
-        $newBlogsList = FBlogsArticle::where($where)
+        $newBlogsList = $select
             ->order("create_time", "desc")
             ->page($page, 5)
             ->paginate(5);
@@ -279,6 +286,14 @@ class Index extends IndexBaseController
         return $this->fetch();
     }
 
+    /**
+     * 搜索博客
+     * @param Request $request
+     * @param string $keyword
+     * @param int $page
+     * @return mixed
+     * @throws \think\exception\DbException
+     */
     public function search(Request $request, $keyword = "", $page = 1)
     {
         $post = $request->post();
