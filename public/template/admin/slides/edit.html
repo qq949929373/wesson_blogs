@@ -1,0 +1,61 @@
+<div class="layui-card">
+    <div class="layui-card-header">{if ($id==0)}新增轮播图{else /}修改轮播图{/if}</div>
+    <div class="layui-card-body">
+        <form class="layui-form" action="/admin/slides/saveOrUpdate" method="post">
+            <input type="hidden" name="id" value="{$slides.id}"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">排序值：</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="sort" placeholder="默认99"
+                           autocomplete="off" value="{$slides.sort}" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">越大越靠前</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span style="color: red;">*</span>图片:</label>
+                <div class="layui-input-block">
+                    <img src="{if ($id!=0)}{$rootPath}{$slides.image_url}{/if}" id="image_url" width="100" height="50">
+                    <input id="image_url_input" placeholder="请选择封面图" name="image_url" type="hidden"
+                           value="{$slides.image_url}" required lay-verify="required"/>
+                    <button type="button" class="layui-btn" id="uploadBtn">
+                        <i class="layui-icon">&#xe67c;</i>上传图片
+                    </button>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">跳转地址：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="link_url" placeholder="请输入跳转地址"
+                           autocomplete="off" class="layui-input" value="{$slides.link_url}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">保存</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['jquery', 'upload'], function () {
+        $ = layui.jquery;
+        //文件上传
+        var upload = layui.upload;
+        var uploadInst = upload.render({
+            elem: '#uploadBtn'
+            , url: '/admin/file/uploadImage'
+            , done: function (res, index, upload) { //上传后的回调
+                if (res.code == 0) {
+                    layer.msg(res.msg);
+                    $("#image_url").attr("src", res.data.img_url);
+                    $("#image_url_input").val(res.data.file_url);
+                } else {
+                    layer.alert(res.msg);
+                }
+            }
+            , accept: 'images' //允许上传的文件类型
+        })
+    });
+</script>

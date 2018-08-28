@@ -1,0 +1,164 @@
+<link rel="stylesheet" type="text/css" href="__CSS__formSelects-v4.css"/>
+<div class="layui-card">
+    <div class="layui-card-header">{if ($id==0)}新增博客{else /}修改博客{/if}</div>
+    <div class="layui-card-body">
+        <form class="layui-form" id="_form" action="/admin/blogsArticle/saveOrUpdate" method="post">
+            <input type="hidden" name="id" value="{$blogs.id}"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span style="color: red;">*</span>列表图片:</label>
+                <div class="layui-input-block">
+                    <img src="{if ($id!=0)}{$rootPath}{$blogs.list_image}{/if}" id="list_image" width="100" height="50">
+                    <input id="list_image_input" placeholder="请选择封面图" name="list_image" type="hidden"
+                           value="{$blogs.list_image}"/>
+                    <button type="button" class="layui-btn" id="uploadBtn">
+                        <i class="layui-icon">&#xe67c;</i>上传图片
+                    </button>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span style="color: red;">*</span>标题：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" id="title" placeholder="请输入标题"
+                           autocomplete="off" class="layui-input" value="{$blogs.title}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span style="color: red;">*</span>博客内容：</label>
+                <input type="hidden" name="content_text" id="content_text" value="{$blogs.content_text}"/>
+                <textarea id="content" name="content" style="display: none;">{$blogs.content}</textarea>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span style="color: red;">*</span>所属栏目：</label>
+                <div class="layui-input-block">
+                    <select name="category_id" id="category_id">
+                        {foreach $categoryList as $category}
+                        <option {if $category.id== $blogs.category_id.value}selected="selected" {/if} value="{$category.id}">{$category.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span style="color: red;">*</span>语言标签：</label>
+                <input type="hidden" name="tags" id="tags"/>
+                <div class="layui-input-block">
+                    <select xm-select="tags">
+                        {foreach $languageTagList as $languageTag}
+                        <option value="{$languageTag.id}">{$languageTag.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">来源网址：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="source" placeholder="请输入来源网址"
+                           autocomplete="off" class="layui-input" value="{$blogs.source}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">网址名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="source_name" placeholder="请输入来源网址"
+                           autocomplete="off" class="layui-input" value="{$blogs.source_name}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">作者：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="author" placeholder="请输入作者"
+                           autocomplete="off" class="layui-input" value="{$blogs.author}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" type="button" onclick="save()">保存</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="__JS__layui.all.js"></script>
+<script src="__JS__formSelects.js"></script>
+<script>
+    var formSelects = layui.formSelects;
+    formSelects.on("tags");
+    formSelects.value('tags', '{$tags}'.split(","), true);
+    var $;
+    var editIndex;
+    var layedit;
+    layui.use(['jquery', 'form', 'upload', 'layedit'], function () {
+        $ = layui.jquery;
+        var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+        //文件上传
+        var upload = layui.upload;
+        var uploadInst = upload.render({
+            elem: '#uploadBtn'
+            , url: '/admin/file/uploadImage'
+            , done: function (res, index, upload) { //上传后的回调
+                if (res.code == 0) {
+                    layer.msg(res.msg);
+                    $("#list_image").attr("src", res.data.img_url);
+                    $("#list_image_input").val(res.data.file_url);
+                } else {
+                    layer.alert(res.msg);
+                }
+            }
+            , accept: 'images' //允许上传的文件类型
+        })
+        //富文本
+        layedit = layui.layedit;
+        editIndex = layedit.build('content', {
+            uploadImage: {
+                url: '/admin/file/uploadImage', type: 'post'
+            }
+        }); //建立编辑器
+        //但是，如果你的HTML是动态生成的，自动渲染就会失效
+        //因此你需要在相应的地方，执行下述方法来手动渲染，跟这类似的还有 element.init();
+        form.render();
+
+    });
+
+    function save() {
+        $("#content").text(layedit.getContent(editIndex));
+        $("#content_text").val(layedit.getText(editIndex));
+        $("#tags").val(formSelects.value('tags', 'valStr'));
+        if (check()) {
+            $("#_form").submit();
+            return;
+        }
+    }
+
+    function check() {
+        if (empty($("#list_image_input").val())) {
+            layer.msg("请选择封面图");
+            return false;
+        }
+        if (empty($("#title").val())) {
+            layer.msg("请填写标题");
+            return false;
+        }
+        if (empty($("#content_text").val())) {
+            layer.msg("请填写内容");
+            return false;
+        }
+        if (empty($("#category_id").val())) {
+            layer.msg("请选择所属栏目");
+            return false;
+        }
+        if (empty($("#tags").val())) {
+            layer.msg("请选择语言标签");
+            return false;
+        }
+        return true;
+    }
+
+    function empty(str) {
+        if (str == "" || str == null || str == undefined) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>

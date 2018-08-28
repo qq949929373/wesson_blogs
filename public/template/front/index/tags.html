@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    {include file="/common/head"/}
+</head>
+
+<body class="user-select">
+{include file="/common/header"/}
+{block name="container"}
+<section class="container container-page">
+    <div class="pageside">
+        <div class="pagemenus">
+            <ul class="pagemenu">
+                <li><a href="/tags.html">标签云</a></li>
+                <li><a href="/readers.html">读者墙</a></li>
+                <li><a href="/links.html">友情链接</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <header class="article-header">
+            <h1 class="article-title">标签云</h1>
+        </header>
+        <ul class="plinks ptags">
+            {foreach $languageTag as $lang}
+            <li><a href="/blogs/{$lang.category_id}/{$lang.id}.html" title="" target="_blank"> {$lang.name} <span class="badge">{$lang.use_num}</span></a></li>
+            {/foreach}
+        </ul>
+    </div>
+</section>
+{/block}
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2015 - {php}echo date("Y"){/php} <a href="mailto:949929373@qq.com">949929373@qq.com</a>&nbsp; <a
+                href="#" target="_blank" rel="nofollow">豫ICP备20151109-1</a></p>
+    </div>
+    <div id="gotop"><a class="gotop"></a></div>
+</footer>
+<!--微信二维码模态框-->
+<div class="modal fade user-select" id="WeChat" tabindex="-1" role="dialog" aria-labelledby="WeChatModalLabel">
+    <div class="modal-dialog" role="document" style="margin-top:120px;max-width:280px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="WeChatModalLabel" style="cursor:default;">微信扫一扫</h4>
+            </div>
+            <div class="modal-body" style="text-align:center">
+                <img src="__IMAGES__weixin.png" width="200" height="200" alt="" style="cursor:pointer"/>
+            </div>
+        </div>
+    </div>
+</div>
+<!--该功能正在日以继夜的开发中-->
+<div class="modal fade user-select" id="areDeveloping" tabindex="-1" role="dialog"
+     aria-labelledby="areDevelopingModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="areDevelopingModalLabel" style="cursor:default;">该功能正在日以继夜的开发中…</h4>
+            </div>
+            <div class="modal-body"><img src="__IMAGES__baoman/baoman_01.gif" alt="深思熟虑"/>
+                <p style="padding:15px 15px 15px 100px; position:absolute; top:15px; cursor:default;">
+                    很抱歉，程序猿正在日以继夜的开发此功能，本程序将会在以后的版本中持续完善！</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">朕已阅</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--登录模态框-->
+<div class="modal fade user-select" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/front/index/login" method="post" id="loginForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="loginModalLabel">登录</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="loginModalUserName">用户名</label>
+                        <input type="text" class="form-control" name="username" id="loginModalUserName"
+                               placeholder="请输入用户名" autofocus
+                               autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginModalUserPwd">密码</label>
+                        <input type="password" class="form-control" name="password" id="loginModalUserPwd"
+                               placeholder="请输入密码"
+                               autocomplete="off" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="login()">登录</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--注册模态框-->
+<div class="modal fade user-select" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/front/index/register" method="post" id="registerForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="registerModalLabel">注册</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="registerModalUserName">用户名</label>
+                        <input type="text" class="form-control" name="username" id="registerModalUserName"
+                               placeholder="请输入用户名"
+                               autofocus autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerModalUserPwd">密码</label>
+                        <input type="password" class="form-control" name="password" id="registerModalUserPwd"
+                               placeholder="请输入密码"
+                               autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerModalEmail">邮箱</label>
+                        <input type="email" class="form-control" name="email" id="registerModalEmail"
+                               placeholder="邮箱忘记密码使用"
+                               autofocus autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerModalQQ">QQ</label>
+                        <input type="text" class="form-control" name="qq" id="registerModalQQ" placeholder="QQ方便联系"
+                               autofocus autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerModalWechat">微信</label>
+                        <input type="text" class="form-control" name="we_chat" id="registerModalWechat"
+                               placeholder="微信方便联系"
+                               autofocus autocomplete="off">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="register()">登录</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--右键菜单列表-->
+<div id="rightClickMenu">
+    <ul class="list-group rightClickMenuList">
+        <li class="list-group-item disabled">欢迎访问WESSON博客</li>
+        <li class="list-group-item">IP：<span id="userIp">{$Think.session.USER_IP|default=""}</span></li>
+        <li class="list-group-item">地址：<span id="userAddress">{$Think.session.USER_ADDRESS|default=""}</span></li>
+        <li class="list-group-item">系统：<span id="userOs">{$Think.session.USER_OS|default=""}</span></li>
+        <li class="list-group-item">浏览器：<span id="userBrowser">{$Think.session.USER_BROWSER|default=""}</span></li>
+    </ul>
+</div>
+<script src="__JS__bootstrap.min.js"></script>
+<script src="__JS__jquery.ias.js"></script>
+<script src="__JS__scripts.js"></script>
+{block name="script"}{/block}
+</body>
+</html>

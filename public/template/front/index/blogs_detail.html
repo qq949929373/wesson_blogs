@@ -1,0 +1,149 @@
+{extend name="index/index"/}
+{block name="content"}
+<header class="article-header">
+    <h1 class="article-title">
+        <a href="/blogsDetail/{$blogs.id}.html">{$blogs.title}</a>
+    </h1>
+    <div class="article-meta">
+        <span class="item article-meta-time">
+          <time class="time" data-toggle="tooltip" data-placement="bottom" title="时间：{$blogs.create_time}">
+              <i class="glyphicon glyphicon-time"></i> {$blogs.create_time}
+          </time>
+          </span>
+        <span class="item article-meta-source" data-toggle="tooltip" data-placement="bottom"
+              title="来源：{$blogs.source_name}">
+            <i class="glyphicon glyphicon-globe"></i> {$blogs.source_name}
+        </span>
+        <span class="item article-meta-category" data-toggle="tooltip" data-placement="bottom"
+              title="栏目：{$blogs.category_id.text}">
+            <i class="glyphicon glyphicon-list"></i>
+            <a href="program" title="">{$blogs.category_id.text}</a>
+        </span>
+        <span class="item article-meta-views" data-toggle="tooltip" data-placement="bottom" title="查看：120">
+            <i class="glyphicon glyphicon-eye-open"></i> 共{$blogs.view_num}人围观</span>
+        <span class="item article-meta-comment" data-toggle="tooltip" data-placement="bottom"
+              title="评论：{$blogs.comment_num}">
+            <i class="glyphicon glyphicon-comment"></i> {$blogs.comment_num} </span>
+    </div>
+</header>
+<article class="article-content">
+    <p>
+        <img data-original="{$blogs.list_image}" src="{$blogs.list_image}" alt=""/>
+    </p>
+    <div>
+        {$blogs.content|raw}
+    </div>
+    <p class="article-copyright hidden-xs">
+        未经允许不得转载：<a href="/">WESSON_BLOGS</a> »
+        <a href="/blogsDetail/{$blogs.id}.html">{$blogs.title}</a>
+    </p>
+</article>
+<div class="article-tags">标签：
+    {foreach $languageList as $lang}
+    <a href="/blogs/{$lang.category_id.value}/{$lang.id}.html" rel="tag">{$lang.name}</a>
+    {/foreach}
+</div>
+<div class="relates">
+    <div class="title">
+        <h3>相关推荐</h3>
+    </div>
+    <ul>
+        {foreach $recommendList as $r}
+        <li><a href="/blogsDetail/{$r.id}.html">{$r.title}</a></li>
+        {/foreach}
+    </ul>
+</div>
+<div class="title" id="comment">
+    <h3>评论
+        <small>抢沙发</small>
+    </h3>
+</div>
+<!--<div id="respond">
+  <div class="comment-signarea">
+    <h3 class="text-muted">评论前必须登录！</h3>
+    <p> <a href="javascript:;" class="btn btn-primary login" rel="nofollow">立即登录</a> &nbsp; <a href="javascript:;" class="btn btn-default register" rel="nofollow">注册</a> </p>
+    <h3 class="text-muted">当前文章禁止评论</h3>
+  </div>
+</div>-->
+<div id="respond">
+    <form action="" method="post" id="comment-form">
+        <div class="comment">
+            <div class="comment-title">
+                <img class="avatar" src="__IMAGES__icon/icon.png" alt=""/>
+            </div>
+            <div class="comment-box">
+                <textarea placeholder="您的评论可以一针见血" name="comment" id="comment-textarea" cols="100%" rows="3"
+                          tabindex="1"></textarea>
+                <div class="comment-ctrl">
+                    <span class="emotion">
+                        <img src="__IMAGES__face/5.png" width="20" height="20" alt=""/>表情
+                    </span>
+                    <div class="comment-prompt">
+                        <i class="fa fa-spin fa-circle-o-notch"></i>
+                        <span class="comment-prompt-text"></span>
+                    </div>
+                    <input type="hidden" value="{$id}" class="articleid" id="blogsId"/>
+                    <input type="hidden" value="{$Think.session.USER_ID}" class="articleid" id="userId"/>
+                    <button type="submit" name="comment-submit" id="comment-submit" tabindex="5">评论
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="postcomments">
+    <ol class="commentlist">
+        {foreach $commentList as $comment}
+        <li class="comment-content">
+            <span class="comment-f">#{$comment.sort}</span>
+            <div class="comment-avatar">
+                <img class="avatar" src="__IMAGES__icon/icon.png" alt=""/>
+            </div>
+            <div class="comment-main">
+                <p>来自<span class="address">{$comment.user_id.text=='' ? ($comment.address=='' ? $comment.ip : '') : $comment.user_id.text}</span>
+                    的用户
+                    <span class="time">({$comment.create_time})</span>
+                    <br/>
+                    {$comment.content|raw}
+                </p>
+            </div>
+        </li>
+        {/foreach}
+    </ol>
+
+    <div class="quotes">
+        <ul class="pagination" style="display: inline-block;">
+            {if $commentPage.current_page==1}
+            <li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>
+            {else /}
+            <li><a href="/blogsDetail/{$id}/{$commentPage.current_page-1}.html">&laquo;</a></li>
+            {/if}
+            {for start="1" end="$commentPage.last_page+1" step="1" name="i"}
+            {if $commentPage.current_page == $i}
+            <li class="active"><a href="/blogsDetail/{$id}/{$i}.html">{$i}</a></li>
+            {else /}
+            <li><a href="/blogsDetail/{$id}/{$i}.html">{$i}</a></li>
+            {/if}
+            {/for}
+            {if $commentPage.last_page == 0 or $commentPage.current_page==$commentPage.last_page}
+            <li class="disabled"><a href="javascript:void(0)">&raquo;</a></li>
+            {else /}
+            <li><a href="/blogsDetail/{$id}/{$commentPage.current_page+1}.html">&raquo;</a></li>
+            {/if}
+        </ul>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script src="__JS__jquery.qqFace.js"></script>
+<script type="text/javascript">
+    var imageUrl = '__IMAGES__';
+    $(function () {
+        $('.emotion').qqFace({
+            id: 'facebox',
+            assign: 'comment-textarea',
+            path: imageUrl + 'arclist/'	//表情存放的路径
+        });
+    });
+</script>
+{/block}

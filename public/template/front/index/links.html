@@ -1,0 +1,25 @@
+{extend name="index/tags"}
+{block name="container"}
+<section class="container container-page">
+    <div class="pageside">
+        <div class="pagemenus">
+            <ul class="pagemenu">
+                <li><a href="/tags.html">标签云</a></li>
+                <li><a href="/readers.html">读者墙</a></li>
+                <li><a href="/links.html">友情链接</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <header class="article-header">
+            <h1 class="article-title">友情链接</h1>
+        </header>
+        <ul class="plinks">
+            {foreach $rollList as $roll}
+            <li><a href="{$roll.link_url}" title="" target="_blank" rel="nofollow"><img src="{$roll.icon}" alt="">{$roll.name}</a>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+</section>
+{/block}

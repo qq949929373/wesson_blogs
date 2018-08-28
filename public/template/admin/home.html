@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>WESSON -- 博客后台管理系统</title>
+  <link rel="stylesheet" href="__CSS__layui.css" id="layui">
+  <link rel="stylesheet" href="__CSS__theme/default.css" id="theme">
+  <link rel="stylesheet" href="__CSS__kitadmin.css" id="kitadmin">
+  <!--<script src="__JS__jquery.js"></script>-->
+  <script src="__JS__polyfill.min.js"></script>
+  <script src="__JS__layui.js"></script>
+  <script src="__JS__kitadmin.js"></script>
+  <!--<script src="__JS__mockjs-config.js"></script>-->
+
+</head>
+
+<body class="layui-layout-body kit-theme-default">
+  <div class="layui-layout layui-layout-admin">
+    {include file="/common/header"/}
+    {include file="/common/silds"/}
+    <!-- main -->
+    <div class="layui-body" kit-body="true">
+      <!--<router-view></router-view>-->
+      {__CONTENT__}
+    </div>
+    <!-- footer -->
+    <div class="layui-footer" kit-footer="true">
+      <p>&copy; 2015 - {php}echo date("Y"){/php} <a href="mailto:949929373@qq.com">949929373@qq.com</a>&nbsp; <a
+              href="#" target="_blank" rel="nofollow">豫ICP备20151109-1</a></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.bootcss.com/echarts/4.1.0.rc2/echarts.min.js"></script>
+  <script>layui.use("admin");</script>
+
+</body>
+
+</html>

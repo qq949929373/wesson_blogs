@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    {include file="/common/head"/}
+</head>
+
+<body class="user-select">
+{include file="/common/header"/}
+<section class="container">
+    <div class="content-wrap">
+        <div class="content">
+            {block name="content"}
+            <div class="jumbotron">
+                <h1>欢迎访问WESSON_BLOGS</h1>
+                <p>在这里可以看到前端技术，后端程序，网站内容，管理系统等文章，还有我的程序人生！</p>
+            </div>
+            {block name="slides"}
+            <div id="focusslide" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    {foreach $slides as $s}
+                    <li data-target="#focusslide" data-slide-to="{$slidesI}" class="{if $slidesI==0}active{/if}"></li>
+                    <input type="hidden" value="{$slidesI++}"/>
+                    {/foreach}
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    {foreach $slides as $s}
+                    <div class="item {if $slidesJ==0}active{/if}"><a href="{$s.link_url}" target="_blank">
+                        <img src="{$s.image_url}" alt="" class="img-responsive"></a>
+                    </div>
+                    <input type="hidden" value="{$slidesJ++} "/>
+                    {/foreach}
+                </div>
+                <a class="left carousel-control" href="#focusslide" role="button" data-slide="prev" rel="nofollow">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span
+                        class="sr-only">上一个</span> </a> <a class="right carousel-control" href="#focusslide"
+                                                           role="button" data-slide="next" rel="nofollow"> <span
+                    class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span
+                    class="sr-only">下一个</span> </a></div>
+            {/block}
+            {block name="today"}
+            <article class="excerpt-minic excerpt-minic-index">
+                <h2><span class="red">【今日推荐】</span><a href="" title="">{$today.title}</a></h2>
+                <p class="note">{$today.content}</p>
+            </article>
+            {/block}
+            <div class="title">
+                {block name="categoryName"}
+                <h3>最新发布</h3>
+                {/block}
+                {block name="languageList"}
+                <div class="more">
+                    {foreach $languageList as $lang}
+                    <a href="/blogs/{$lang.category_id.value}/{$lang.id}.html">{$lang.name}</a>
+                    {/foreach}
+                </div>
+                {/block}
+            </div>
+            <div id="articleList">
+                {foreach $newBlogsList as $new}
+                <article class="excerpt excerpt-1">
+                    <a class="focus" href="/blogsDetail/{$new.id}.html" title="">
+                        <img class="thumb" data-original="{$new.list_image}" src="{$new.list_image}" alt=""></a>
+                    <header>
+                        <a class="cat" href="/blogs/{$new.category_id.value}.html">{$new.category_id.text}<i></i></a>
+                        <h2><a href="/blogsDetail/{$new.id}.html" title="">{$new.title}</a></h2>
+                    </header>
+                    <p class="meta">
+                        <time class="time"><i class="glyphicon glyphicon-time"></i> {$new.create_time}</time>
+                        <span class="views"><i class="glyphicon glyphicon-eye-open"></i> 共{$new.view_num}人围观</span>
+                        <a class="comment" href="{:url('blogsDetail',array('id'=>$new.id))}">
+                            <i class="glyphicon glyphicon-comment"></i>{$new.comment_num}</a></p>
+                    <p class="note">{$new.content_text|mb_substr=0,90}...</p>
+                </article>
+                {/foreach}
+            </div>
+            {block name="page"}
+            <div style="text-align: center;">
+                <ul class="pagination" style="display: inline-block;">
+                    {if $page.current_page==1}
+                    <li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>
+                    {else /}
+                    <li><a href="/index/{$page.current_page-1}.html">&laquo;</a></li>
+                    {/if}
+                    {for start="1" end="$page.last_page+1" step="1" name="i"}
+                    {if $page.current_page == $i}
+                    <li class="active"><a href="/index/{$i}.html">{$i}</a></li>
+                    {else /}
+                    <li><a href="/index/{$i}.html">{$i}</a></li>
+                    {/if}
+                    {/for}
+                    {if $page.current_page==$page.last_page}
+                    <li class="disabled"><a href="javascript:void(0)">&raquo;</a></li>
+                    {else /}
+                    <li><a href="/index/{$page.current_page+1}.html">&raquo;</a></li>
+                    {/if}
+                </ul>
+            </div>
+            {/block}
+            {/block}
+        </div>
+    </div>
+    <aside class="sidebar">
+        {block name="noticeList"}
+        <div class="fixed">
+            <div class="widget widget-tabs">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#notice" aria-controls="notice" role="tab" data-toggle="tab">网站公告</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#centre" aria-controls="centre" role="tab" data-toggle="tab">会员中心</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#contact" aria-controls="contact" role="tab" data-toggle="tab">联系站长</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane notice active" id="notice">
+                        <ul>
+                            {foreach $noticeList as $n}
+                            <li>
+                                <time datetime="{$n.create_time}">{$n.create_time|strtotime|date='Y-m-d'}</time>
+                                <a href="" target="_blank">{$n.title}</a></li>
+                            <li>
+                                {/foreach}
+                        </ul>
+                    </div>
+                    <div role="tabpanel" class="tab-pane centre" id="centre">
+                        {if session('?USER_ID')}
+                        <a>欢迎你：{$Think.session.USER_NAME}</a>
+                        {else /}
+                        <h4>需要登录才能进入会员中心</h4>
+                        <p>
+                            <a data-toggle="modal" data-target="#loginModal" class="btn btn-primary">立即登录</a>
+                            <a data-toggle="modal" data-target="#registerModal" class="btn btn-default">现在注册</a>
+                        </p>
+                        {/if}
+                    </div>
+                    <div role="tabpanel" class="tab-pane contact" id="contact">
+                        <h2>Email:<br/>
+                            <a href="mailto:949929373@qq.com" data-toggle="tooltip" data-placement="bottom"
+                               title="949929373@qq.com">949929373@qq.com</a>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="widget widget_search">
+                <form class="navbar-form" action="/search" method="post">
+                    <div class="input-group">
+                        <input type="text" name="keyword" class="form-control" size="35" placeholder="请输入关键字" autocomplete="off">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-search" name="search" type="submit">搜索</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {/block}
+        <div class="widget widget_sentence">
+            <h3>每日一句</h3>
+            <div class="widget-sentence-content">
+                <h4>{$say.recommend_time|strtotime|date='Y年m月d日'} 星期{$weeks[$week]}</h4>
+                <p>{$say.content}</p>
+            </div>
+        </div>
+        <div class="widget widget_hot">
+            <h3>热门文章</h3>
+            <ul>
+                {foreach $holdBlogsList as $hold}
+                <li>
+                    <a href="/blogsDetail/{$hold.id}.html">
+                        <span class="thumbnail">
+                            <img class="thumb" data-original="{$hold.list_image}" src="{$hold.list_image}" alt="">
+                        </span>
+                        <span class="text">{$hold.title}</span>
+                        <span class="muted">
+                            <i class="glyphicon glyphicon-time"></i>
+                            {$hold.create_time|date='Y-m-d H:i:s'}
+                        </span>
+                        <span class="muted">
+                            <i class="glyphicon glyphicon-eye-open"></i>
+                            {$hold.view_num}
+                        </span>
+                    </a>
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+    </aside>
+</section>
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2015 - {php}echo date("Y"){/php} <a href="mailto:949929373@qq.com">949929373@qq.com</a>&nbsp; <a
+                href="#" target="_blank" rel="nofollow">豫ICP备20151109-1</a></p>
+    </div>
+    <div id="gotop"><a class="gotop"></a></div>
+</footer>
+<!--微信二维码模态框-->
+<div class="modal fade user-select" id="WeChat" tabindex="-1" role="dialog" aria-labelledby="WeChatModalLabel">
+    <div class="modal-dialog" role="document" style="margin-top:120px;max-width:280px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="WeChatModalLabel" style="cursor:default;">微信扫一扫</h4>
+            </div>
+            <div class="modal-body" style="text-align:center">
+                <img src="__IMAGES__weixin.png" width="200" height="200" alt="" style="cursor:pointer"/>
+            </div>
+        </div>
+    </div>
+</div>
+<!--该功能正在日以继夜的开发中-->
+<div class="modal fade user-select" id="areDeveloping" tabindex="-1" role="dialog"
+     aria-labelledby="areDevelopingModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="areDevelopingModalLabel" style="cursor:default;">该功能正在日以继夜的开发中…</h4>
+            </div>
+            <div class="modal-body"><img src="__IMAGES__baoman/baoman_01.gif" alt="深思熟虑"/>
+                <p style="padding:15px 15px 15px 100px; position:absolute; top:15px; cursor:default;">
+                    很抱歉，程序猿正在日以继夜的开发此功能，本程序将会在以后的版本中持续完善！</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">朕已阅</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--登录模态框-->
+<div class="modal fade user-select" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/front/index/login" method="post" id="loginForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="loginModalLabel">登录</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="loginModalUserName">用户名</label>
+                        <input type="text" class="form-control" name="username" id="loginModalUserName"
+                               placeholder="请输入用户名" autofocus
+                               autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginModalUserPwd">密码</label>
+                        <input type="password" class="form-control" name="password" id="loginModalUserPwd"
+                               placeholder="请输入密码"
+                               autocomplete="off" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="login()">登录</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--注册模态框-->
+<div class="modal fade user-select" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/front/index/register" method="post" id="registerForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="registerModalLabel">注册</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="registerModalUserName">用户名</label>
+                        <input type="text" class="form-control" name="username" id="registerModalUserName"
+                               placeholder="请输入用户名"
+                               autofocus autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerModalUserPwd">密码</label>
+                        <input type="password" class="form-control" name="password" id="registerModalUserPwd"
+                               placeholder="请输入密码"
+                               autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerModalEmail">邮箱</label>
+                        <input type="email" class="form-control" name="email" id="registerModalEmail"
+                               placeholder="邮箱忘记密码使用"
+                               autofocus autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerModalQQ">QQ</label>
+                        <input type="text" class="form-control" name="qq" id="registerModalQQ" placeholder="QQ方便联系"
+                               autofocus autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerModalWechat">微信</label>
+                        <input type="text" class="form-control" name="we_chat" id="registerModalWechat"
+                               placeholder="微信方便联系"
+                               autofocus autocomplete="off">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="register()">登录</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--右键菜单列表-->
+<div id="rightClickMenu">
+    <ul class="list-group rightClickMenuList">
+        <li class="list-group-item disabled">欢迎访问WESSON博客</li>
+        <li class="list-group-item">IP：<span id="userIp">{$Think.session.USER_IP|default=""}</span></li>
+        <li class="list-group-item">地址：<span id="userAddress">{$Think.session.USER_ADDRESS|default=""}</span></li>
+        <li class="list-group-item">系统：<span id="userOs">{$Think.session.USER_OS|default=""}</span></li>
+        <li class="list-group-item">浏览器：<span id="userBrowser">{$Think.session.USER_BROWSER|default=""}</span></li>
+    </ul>
+</div>
+<script src="__JS__bootstrap.min.js"></script>
+<script src="__JS__jquery.ias.js"></script>
+<script src="__JS__scripts.js"></script>
+<script>
+    var layer;
+    layui.use("layer", function () {
+        layer = layui.layer;
+    });
+
+    function login() {
+        if (checkLogin()) {
+            $("#loginForm").submit();
+            return;
+        }
+    }
+
+    function register() {
+        if (checkRegister()) {
+            $("#registerForm").submit();
+            return;
+        }
+    }
+
+    function checkRegister() {
+        if (empty($("#registerModalUserName").val())) {
+            layer.msg("请输入用户名");
+            return false;
+        }
+        if (empty($("#registerModalUserPwd").val())) {
+            layer.msg("请输入密码");
+            return false;
+        }
+        if (empty($("#registerModalEmail").val())) {
+            layer.msg("请输入邮箱");
+            return false;
+        }
+        return true;
+    }
+
+    function checkLogin() {
+        if (empty($("#loginModalUserName").val())) {
+            layer.msg("请输入用户名");
+            return false;
+        }
+        if (empty($("#loginModalUserPwd").val())) {
+            layer.msg("请输入密码");
+            return false;
+        }
+        return true;
+    }
+
+    function empty(str) {
+        if (str == '' || str == null || str == undefined) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+{block name="script"}{/block}
+</body>
+</html>

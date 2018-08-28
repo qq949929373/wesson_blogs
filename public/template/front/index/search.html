@@ -1,0 +1,31 @@
+{extend name="index/index"/}
+{block name="slides"}{/block}
+{block name="today"}{/block}
+{block name="categoryName"}
+<h3>{$keyword}</h3>
+{/block}
+
+{block name="languageList"}{/block}
+{block name="page"}
+<div style="text-align: center;">
+    <ul class="pagination" style="display: inline-block;">
+        {if $page.current_page==1}
+        <li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>
+        {else /}
+        <li><a href="/search/{$page.current_page-1}.html">&laquo;</a></li>
+        {/if}
+        {for start="1" end="$page.last_page+1" step="1" name="i"}
+        {if $page.current_page == $i}
+        <li class="active"><a href="/search/{$i}.html">{$i}</a></li>
+        {else /}
+        <li><a href="/search/{$i}.html">{$i}</a></li>
+        {/if}
+        {/for}
+        {if $page.current_page==$page.last_page}
+        <li class="disabled"><a href="javascript:void(0)">&raquo;</a></li>
+        {else /}
+        <li><a href="/search/{$page.current_page+1}.html">&raquo;</a></li>
+        {/if}
+    </ul>
+</div>
+{/block}

@@ -1,0 +1,31 @@
+{extend name="index/tags"}
+{block name="container"}
+<section class="container container-page">
+    <div class="pageside">
+        <div class="pagemenus">
+            <ul class="pagemenu">
+                <li><a href="tags.html">标签云</a></li>
+                <li><a href="readers.html">读者墙</a></li>
+                <li><a href="links.html">友情链接</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <header class="article-header">
+            <h1 class="article-title">读者墙</h1>
+        </header>
+        <div class="readers">
+            {foreach $userList as $user}
+            <a class="item-readers {$user.class}" href="mailto:949929373@qq.com" rel="nofollow">
+                <h4>{$user.type}
+                    <small>评论：{$user.count}</small>
+                </h4>
+                <img class="avatar" height="36" width="36" src="__IMAGES__icon/icon.png" alt="">
+                <strong>{$user.username}</strong>{$user.email}
+            </a>
+            {/foreach}
+        </div>
+    </div>
+</section>
+
+{/block}

@@ -1,0 +1,31 @@
+{extend name="index/index"/}
+{block name="slides"}{/block}
+{block name="today"}{/block}
+{block name="noticeList"}{/block}
+{block name="categoryName"}
+<h3>{$categoryName}</h3>
+{/block}
+
+{block name="page"}
+<div style="text-align: center;">
+    <ul class="pagination" style="display: inline-block;">
+        {if $page.current_page==1}
+        <li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>
+        {else /}
+        <li><a href="/blogs/{$categoryId}{if $tags!=''}/{$tags}{/if}.html?page={$page.current_page-1}">&laquo;</a></li>
+        {/if}
+        {for start="1" end="$page.last_page+1" step="1" name="i"}
+        {if $page.current_page == $i}
+        <li class="active"><a href="/blogs/{$categoryId}{if $tags!=''}/{$tags}{/if}.html?page={$i}">{$i}</a></li>
+        {else /}
+        <li><a href="/blogs/{$categoryId}{if $tags!=''}/{$tags}{/if}.html?page={$i}">{$i}</a></li>
+        {/if}
+        {/for}
+        {if $page.current_page==$page.last_page}
+        <li class="disabled"><a href="javascript:void(0)">&raquo;</a></li>
+        {else /}
+        <li><a href="/blogs/{$categoryId}{if $tags!=''}/{$tags}{/if}.html?page={$page.current_page+1}">&raquo;</a></li>
+        {/if}
+    </ul>
+</div>
+{/block}
