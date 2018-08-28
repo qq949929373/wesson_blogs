@@ -127,7 +127,10 @@
                     </div>
                     <div role="tabpanel" class="tab-pane centre" id="centre">
                         {if session('?USER_ID')}
-                        <a>欢迎你：{$Think.session.USER_NAME}</a>
+                        <p>
+                            <a class="btn btn-primary" href="/makeBlog.html">写博客</a>
+                            <a class="btn btn-default" href="/myBlog/{$Think.session.USER_ID}.html">我的博客</a>
+                        </p>
                         {else /}
                         <h4>需要登录才能进入会员中心</h4>
                         <p>

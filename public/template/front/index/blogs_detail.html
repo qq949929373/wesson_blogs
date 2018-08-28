@@ -11,8 +11,8 @@
           </time>
           </span>
         <span class="item article-meta-source" data-toggle="tooltip" data-placement="bottom"
-              title="来源：{$blogs.source_name}">
-            <i class="glyphicon glyphicon-globe"></i> {$blogs.source_name}
+              title="来源：{$blogs.source_name != '' ? $blogs.source_name : ($blogs.author == '' ? '' : $blogs.author)}">
+            <i class="glyphicon glyphicon-globe"></i> {$blogs.source_name != '' ? $blogs.source_name : ($blogs.author == '' ? '' : $blogs.author)}
         </span>
         <span class="item article-meta-category" data-toggle="tooltip" data-placement="bottom"
               title="栏目：{$blogs.category_id.text}">
@@ -34,7 +34,7 @@
         {$blogs.content|raw}
     </div>
     <p class="article-copyright hidden-xs">
-        未经允许不得转载：<a href="/">WESSON_BLOGS</a> »
+        未经允许不得转载：<a href="/myBlog/{$blogs.author_id}.html">{$blogs.author}</a> »
         <a href="/blogsDetail/{$blogs.id}.html">{$blogs.title}</a>
     </p>
 </article>

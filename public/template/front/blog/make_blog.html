@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>写博客</title>
+    <link rel="stylesheet" href="__CSS__layui.css" id="layui">
+    <link rel="stylesheet" type="text/css" href="__CSS__formSelects-v4.css"/>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body" kit-body="true">
+        <div class="layui-card">
+            <div class="layui-card-header">写博客</div>
+            <div class="layui-card-body">
+                <form class="layui-form" id="_form" action="/newBlog" method="post">
+                    <input type="hidden" name="id"/>
+                    <input type="hidden" name="author_id" value="{$Think.session.USER_ID}"/>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><span style="color: red;">*</span>列表图片:</label>
+                        <div class="layui-input-block">
+                            <img src="" id="list_image" width="100" height="50">
+                            <input id="list_image_input" placeholder="请选择封面图" name="list_image" type="hidden" />
+                            <button type="button" class="layui-btn" id="uploadBtn">
+                                <i class="layui-icon">&#xe67c;</i>上传图片
+                            </button>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><span style="color: red;">*</span>标题：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" id="title" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><span style="color: red;">*</span>博客内容：</label>
+                        <input type="hidden" name="content_text" id="content_text"/>
+                        <textarea id="content" name="content" style="display: none;"></textarea>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><span style="color: red;">*</span>所属栏目：</label>
+                        <div class="layui-input-block">
+                            <select name="category_id" id="category_id">
+                                {foreach $categoryList as $category}
+                                <option value="{$category.id}">{$category.name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><span style="color: red;">*</span>语言标签：</label>
+                        <input type="hidden" name="tags" id="tags"/>
+                        <div class="layui-input-block">
+                            <select xm-select="tags">
+                                {foreach $languageTagList as $languageTag}
+                                <option value="{$languageTag.id}">{$languageTag.name} ---- {$languageTag.category_id.text}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">来源网址：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="source" placeholder="请输入来源网址"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">网址名称：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="source_name" placeholder="请输入来源网址"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">作者：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="author" placeholder="请输入作者"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" type="button" onclick="save()">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script src="__JS__layui.all.js"></script>
+        <script src="__JS__formSelects.js"></script>
+        <script>
+            var formSelects = layui.formSelects;
+            formSelects.on("tags");
+            var $;
+            var editIndex;
+            var layedit;
+            layui.use(['jquery', 'form', 'upload', 'layedit'], function () {
+                $ = layui.jquery;
+                var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+                //文件上传
+                var upload = layui.upload;
+                var uploadInst = upload.render({
+                    elem: '#uploadBtn'
+                    , url: '/admin/file/uploadImage'
+                    , done: function (res, index, upload) { //上传后的回调
+                        if (res.code == 0) {
+                            layer.msg(res.msg);
+                            $("#list_image").attr("src", res.data.img_url);
+                            $("#list_image_input").val(res.data.file_url);
+                        } else {
+                            layer.alert(res.msg);
+                        }
+                    }
+                    , accept: 'images' //允许上传的文件类型
+                })
+                //富文本
+                layedit = layui.layedit;
+                editIndex = layedit.build('content', {
+                    uploadImage: {
+                        url: '/admin/file/uploadImage', type: 'post'
+                    }
+                }); //建立编辑器
+                //但是，如果你的HTML是动态生成的，自动渲染就会失效
+                //因此你需要在相应的地方，执行下述方法来手动渲染，跟这类似的还有 element.init();
+                form.render();
+
+            });
+
+            function save() {
+                $("#content").text(layedit.getContent(editIndex));
+                $("#content_text").val(layedit.getText(editIndex));
+                $("#tags").val(formSelects.value('tags', 'valStr'));
+                if (check()) {
+                    $("#_form").submit();
+                    return;
+                }
+            }
+
+            function check() {
+                if (empty($("#list_image_input").val())) {
+                    layer.msg("请选择封面图");
+                    return false;
+                }
+                if (empty($("#title").val())) {
+                    layer.msg("请填写标题");
+                    return false;
+                }
+                if (empty($("#content_text").val())) {
+                    layer.msg("请填写内容");
+                    return false;
+                }
+                if (empty($("#category_id").val())) {
+                    layer.msg("请选择所属栏目");
+                    return false;
+                }
+                if (empty($("#tags").val())) {
+                    layer.msg("请选择语言标签");
+                    return false;
+                }
+                return true;
+            }
+
+            function empty(str) {
+                if (str == "" || str == null || str == undefined) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        </script>
+    </div>
+    <div class="layui-footer" kit-footer="true">
+        <p>&copy; 2015 - {php}echo date("Y"){/php}
+            <a href="mailto:949929373@qq.com">949929373@qq.com</a>&nbsp;
+            <a href="#" target="_blank" rel="nofollow">豫ICP备20151109-1</a>
+        </p>
+    </div>
+</div>
+</body>
+</html>
