@@ -5,7 +5,7 @@
                 <div class="layui-card-body">
                     <div class="layui-card-header">
                         <!-- <span>所有会员列表</span> -->
-                        <a href="/admin/languageTag/edit/id/0.html" class="layui-btn layui-btn-xs">
+                        <a href="/admin/language_tag/edit/id/0.html" class="layui-btn layui-btn-xs">
                             <i class="layui-icon">&#xe654;</i>
                             <span>新增</span>
                         </a>
@@ -140,11 +140,11 @@
                 //do somehing
             } else if (layEvent === 'del') { //删除
                 layer.confirm('确认删除？', function (index) {
-                    location.href = "/admin/languageTag/delete/id/" + data.id + ".html";
+                    location.href = "/admin/language_tag/delete/id/" + data.id + ".html";
                 });
             } else if (layEvent === 'edit') { //编辑
                 //do something
-                location.href = "/admin/languageTag/edit/id/" + data.id + ".html";
+                location.href = "/admin/language_tag/edit/id/" + data.id + ".html";
             }
         });
 

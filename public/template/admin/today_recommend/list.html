@@ -5,7 +5,7 @@
                 <div class="layui-card-body">
                     <div class="layui-card-header">
                         <!-- <span>所有会员列表</span> -->
-                        <a href="/admin/todayRecommend/edit/id/0.html" class="layui-btn layui-btn-xs">
+                        <a href="/admin/today_recommend/edit/id/0.html" class="layui-btn layui-btn-xs">
                             <i class="layui-icon">&#xe654;</i>
                             <span>新增</span>
                         </a>
@@ -116,11 +116,11 @@
                 //do somehing
             } else if (layEvent === 'del') { //删除
                 layer.confirm('确认删除？', function (index) {
-                    location.href = "/admin/todayRecommend/delete/id/" + data.id + ".html";
+                    location.href = "/admin/today_recommend/delete/id/" + data.id + ".html";
                 });
             } else if (layEvent === 'edit') { //编辑
                 //do something
-                location.href = "/admin/todayRecommend/edit/id/" + data.id + ".html";
+                location.href = "/admin/today_recommend/edit/id/" + data.id + ".html";
             }
         });
 

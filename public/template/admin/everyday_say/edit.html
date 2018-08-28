@@ -1,7 +1,7 @@
 <div class="layui-card">
     <div class="layui-card-header">{if ($id==0)}新增一句{else /}修改一句{/if}</div>
     <div class="layui-card-body">
-        <form class="layui-form" action="/admin/everydaySay/saveOrUpdate" method="post">
+        <form class="layui-form" action="/admin/everyday_say/saveOrUpdate" method="post">
             <input type="hidden" name="id" value="{$everydaySay.id}"/>
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">内容：</label>

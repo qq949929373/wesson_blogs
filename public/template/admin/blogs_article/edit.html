@@ -2,7 +2,7 @@
 <div class="layui-card">
     <div class="layui-card-header">{if ($id==0)}新增博客{else /}修改博客{/if}</div>
     <div class="layui-card-body">
-        <form class="layui-form" id="_form" action="/admin/blogsArticle/saveOrUpdate" method="post">
+        <form class="layui-form" id="_form" action="/admin/blogs_article/saveOrUpdate" method="post">
             <input type="hidden" name="id" value="{$blogs.id}"/>
             <div class="layui-form-item">
                 <label class="layui-form-label"><span style="color: red;">*</span>列表图片:</label>

@@ -1,7 +1,7 @@
 <div class="layui-card">
     <div class="layui-card-header">{if ($id==0)}新增推荐{else /}修改推荐{/if}</div>
     <div class="layui-card-body">
-        <form class="layui-form" action="/admin/todayRecommend/saveOrUpdate" method="post">
+        <form class="layui-form" action="/admin/today_recommend/saveOrUpdate" method="post">
             <input type="hidden" name="id" value="{$todayRecommend.id}"/>
             <div class="layui-form-item">
                 <label class="layui-form-label">标题：</label>

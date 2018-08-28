@@ -1,7 +1,7 @@
 <div class="layui-card">
     <div class="layui-card-header">{if ($id==0)}新增标签{else /}修改标签{/if}</div>
     <div class="layui-card-body">
-        <form class="layui-form" action="/admin/languageTag/saveOrUpdate" method="post">
+        <form class="layui-form" action="/admin/language_tag/saveOrUpdate" method="post">
             <input type="hidden" name="id" value="{$languageTag.id}"/>
             <div class="layui-form-item">
                 <label class="layui-form-label">标题：</label>
